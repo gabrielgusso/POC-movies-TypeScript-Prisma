@@ -3,21 +3,28 @@ export type MovieEntity = {
   name: string
   platformId: number
   genreId: number
+  watchedStatus: boolean
 }
 
-export type Movie = Omit<MovieEntity, "id">
+export type  Movie = Omit<MovieEntity, "id">
 
 export type Watched = {
   watchedStatus: boolean
 }
 
-export type Platform = {
+export type PlatformEntity = {
+  id: number
   name: string
 }
 
-export type Genre = {
+export type  Platform = Omit<PlatformEntity, "id">
+
+export type GenreEntity = {
+  id: number
   name: string
 }
+
+export type  Genre = Omit<GenreEntity, "id">
 
 export type TotalMovies = {
   totalMovies: number

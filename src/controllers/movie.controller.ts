@@ -13,7 +13,7 @@ import {
 export async function movieGetController(req: Request, res: Response) {
   try {
     const result = await listAllMovies()
-    return res.status(200).send(result.rows)
+    return res.status(200).send(result)
   } catch (error) {
     res.status(500).send(error)
   }
@@ -22,7 +22,7 @@ export async function movieGetController(req: Request, res: Response) {
 export async function totalMovieGetController(req: Request, res: Response) {
   try {
     const result = await listAmountOfMovies()
-    return res.status(200).send(result.rows[0])
+    return res.status(200).send({totalMovies: result})
   } catch (error) {
     res.status(500).send(error)
   }
@@ -34,7 +34,7 @@ export async function moviePostController(req: Request, res: Response) {
   try {
     const result = await insertMovie(movie)
 
-    res.status(201).send(`Movie inserted ${result.rowCount}`)
+    res.status(201).send(`Movie inserted`)
   } catch (error) {
     res.status(500).send(error)
   }
@@ -49,11 +49,11 @@ export async function movieUpdateController(req: Request, res: Response) {
   }
   try {
     const movieExist = await verifyIfExist(id)
-    if (!movieExist.rows[0]) {
+    if (!movieExist) {
       return res.status(404).send("Movie not found")
     }
 
-    if (movieExist.rows[0].watchedStatus === false) {
+    if (movieExist.watchedStatus === false) {
       await updatetMovieTrue(id)
     } else {
       await updatetMovieFalse(id)
@@ -74,7 +74,7 @@ export async function movieDeleteController(req: Request, res: Response) {
   }
   try {
     const movieExist = await verifyIfExist(id)
-    if (!movieExist.rows[0]) {
+    if (!movieExist) {
       return res.status(404).send("Movie not found")
     }
 

@@ -6,7 +6,7 @@ export async function platformGetController(req: Request, res: Response) {
   try {
     const result =  await listPlatforms()
 
-    return res.status(200).send(result.rows)
+    return res.status(200).send(result)
   } catch (error) {
     res.status(500).send(error)
   }
@@ -18,7 +18,7 @@ export async function platformPostController(req: Request, res: Response) {
   try {
     const result = await insertPlatiform(platform)
 
-    res.status(201).send(`Platform inserted ${result.rowCount}`)
+    res.status(201).send(`Platform ${result.name} inserted`)
   } catch (error) {
     res.status(500).send(error)
   }

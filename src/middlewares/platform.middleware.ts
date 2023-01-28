@@ -18,7 +18,7 @@ export async function platformMiddleware(
 
   try {
     const verify = await verifyIfExistPlatform(platform)
-    if (verify.rows[0]) {
+    if (verify) {
       return res.status(409).send("This platform is already registered")
     }
 

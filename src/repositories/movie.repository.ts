@@ -1,51 +1,76 @@
-import { connection } from "../config/database.js"
-import { QueryResult } from "pg"
-import { Movie, TotalMovies, MovieEntity, Watched } from "../protocols/protocols.js"
+import prisma from "../config/database.js"
+import { Movie, MovieEntity } from "../protocols/protocols.js"
 
-export async function listAllMovies(): Promise<QueryResult<MovieEntity>> {
-  return await connection.query(`
-SELECT m.id, m.name, p.name as platform, g.name as genre, m."watchedStatus" 
-FROM movies m
-JOIN platform p
-ON m."platformId" = p.id
-JOIN genre g
-ON m."genreId" = g.id
-ORDER BY m.id
-`)
+export async function listAllMovies(){
+  return await prisma.movies.findMany({
+    select: {
+      id: true,
+      name: true,
+      watchedStatus: true,
+      platform: {
+        select: {
+          name: true,
+        },
+      },
+      genre: {
+        select: {
+          name: true
+        }
+      } 
+    },
+    orderBy: {
+      id: 'desc'
+    }
+  })
 }
 
-export async function listAmountOfMovies(): Promise<QueryResult<TotalMovies>> {
-  return await connection.query(`
-    SELECT COUNT(id) as "totalMovies" FROM movies
-    `)
+export async function listAmountOfMovies(): Promise<number>{
+  return await prisma.movies.count()
 }
 
-export async function insertMovie(movie:Movie): Promise<QueryResult> {
-  return await connection.query(
-    `INSERT INTO movies (name, "platformId", "genreId") VALUES ($1, $2, $3)`,
-    [movie.name, movie.platformId, movie.genreId]
-  )
+export async function insertMovie(movie:Movie): Promise<MovieEntity>{
+  return prisma.movies.create({
+    data: movie
+  })
 }
 
-export async function verifyIfExist(id:string): Promise<QueryResult<Watched>> {
-  return await connection.query(`SELECT "watchedStatus" FROM movies WHERE id=$1`, [id])
+export async function verifyIfExist(id:string): Promise<MovieEntity>{
+  return await prisma.movies.findFirst({
+    where: {
+      id: Number(id),
+    }
+  })
 }
 
-export async function updatetMovieTrue(id:string): Promise<QueryResult> {
-    return await connection.query(
-        `UPDATE movies SET "watchedStatus" = true WHERE id = $1`,
-        [id]
-    )
+
+
+export async function updatetMovieTrue(id:string): Promise<MovieEntity>{
+  return await prisma.movies.update({
+    where: {
+      id: Number(id),
+    },
+    data: {
+      watchedStatus: true
+    }
+  })
 }
 
-export async function updatetMovieFalse(id:string): Promise<QueryResult> {
-    return await connection.query(
-        `UPDATE movies SET "watchedStatus" = false WHERE id = $1`,
-        [id]
-    )
+export async function updatetMovieFalse(id:string): Promise<MovieEntity>{
+  return await prisma.movies.update({
+    where: {
+      id: Number(id),
+    },
+    data: {
+      watchedStatus: false
+    }
+  })
 }
 
-export async function deleteMovie(id:string): Promise<QueryResult> {
-    return await connection.query(`DELETE FROM movies WHERE id = $1`, [id])
+export async function deleteMovie(id:string): Promise<MovieEntity> {
+  return await prisma.movies.delete({
+    where: {
+      id: Number(id)
+    }
+  })
 }
 

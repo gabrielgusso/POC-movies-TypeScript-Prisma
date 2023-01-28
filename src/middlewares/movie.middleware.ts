@@ -19,12 +19,12 @@ export async function movieMiddleware(
 
   try {
     const verifyIfExistPlatform = await verifyIfExistPlatformId(movie)
-    if (!verifyIfExistPlatform.rows[0]) {
+    if (!verifyIfExistPlatform) {
       return res.status(404).send("Platform not found")
     }
 
     const verifyIfExistGenre = await verifyIfExistGenremId(movie)
-    if (!verifyIfExistGenre.rows[0]) {
+    if (!verifyIfExistGenre) {
       return res.status(404).send("Genre not found")
     }
 

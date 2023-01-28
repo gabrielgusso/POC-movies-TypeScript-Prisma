@@ -18,7 +18,7 @@ export async function genreMiddleware(
 
   try {
     const verify = await verifyIfExistGenre(genre)
-    if (verify.rows[0]) {
+    if (verify) {
       return res.status(409).send("This genre is already registered")
     }
 

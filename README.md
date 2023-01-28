@@ -43,13 +43,16 @@ npm start
 /genre - Body: { "name": "Ficção científica"}
 
 ### GET: 
-/movies - Returns : [{
-    "id": 1,
-    "name": "Interestelar",
-    "platform": "Prime Video",
-    "genre": "Ficção científica",
-    "watchedStatus": true
-  }, ...]
+/movies - Returns : [  {
+    "id": 14,
+    "name": "Vingadores",
+    "watchedStatus": false,
+    "platform": {
+      "name": "Disney+"
+    },
+    "genre": {
+      "name": "Aventura"
+    }, ...]
 
   /platforms - Returns : [
   {
