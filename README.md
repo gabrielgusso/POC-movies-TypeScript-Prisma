@@ -2,7 +2,7 @@
 
 ## About
 
-An api to register the movies I want to watch, made to practice TypeScript
+An api to register the movies I want to watch, made to practice TypeScript and Prisma
 
 ## How to run for development
 
@@ -12,12 +12,13 @@ An api to register the movies I want to watch, made to practice TypeScript
 ```bash
 npm i
 ```
+3. Configure the `.env` file using the `.env.example`
 
-3. Create a PostgreSQL database with whatever name you want
+4. Run prima migrate
 
-4. Copy and paste the dump.sql in your database
-
-4. Configure the `.env` file using the `.env.example`
+```bash
+npx prisma migrate dev
+```
 
 5. Run the back-end in a development environment:
 
